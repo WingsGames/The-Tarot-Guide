@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tarot Guide</title>
+    <!-- Use Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark background color */
+            color: #c9d1d9; /* Light text color */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card-item {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 180px; /* Uniform height for all cards with image */
+            text-align: center;
+        }
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        .nav-link {
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .nav-link.active {
+            color: #4fd1c5; /* Teal-300 */
+        }
+        #card-details-window {
+            position: fixed;
+            bottom: -100%; /* Start off-screen */
+            left: 0;
+            width: 100%;
+            background-color: #1a202c; /* Darker gray background */
+            border-top: 1px solid #2d3748;
+            transition: bottom 0.5s ease-in-out;
+            box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+        #card-details-window.visible {
+            bottom: 0;
+        }
+        .card-image {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        #card-details-image {
+            width: 150px;
+            height: 225px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="container mx-auto">
+        <!-- Header Section -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl sm:text-5xl font-bold text-teal-300 drop-shadow-lg">The Tarot Guide</h1>
+            <p class="mt-4 text-lg sm:text-xl text-gray-400">An introduction to the mystical world of tarot cards.</p>
+        </header>
+
+        <!-- Navigation Bar -->
+        <nav class="flex flex-wrap justify-center sm:justify-start gap-4 sm:gap-6 mb-12 text-lg font-semibold border-b border-gray-700 pb-4">
+            <!-- New Welcome Tab -->
+            <a class="nav-link text-gray-400 hover:text-white" data-section="intro-section" onclick="showSection('intro-section', this)">Welcome 👋</a>
+            
+            <a class="nav-link text-gray-400 hover:text-white" data-section="major-arcana-section" onclick="showSection('major-arcana-section', this)">Major Arcana 🔮</a>
+            <a class="nav-link text-gray-400 hover:text-white" data-section="wands-section" onclick="showSection('wands-section', this)">Wands 🔥</a>
+            <a class="nav-link text-gray-400 hover:text-white" data-section="cups-section" onclick="showSection('cups-section', this)">Cups 💧</a>
+            <a class="nav-link text-gray-400 hover:text-white" data-section="swords-section" onclick="showSection('swords-section', this)">Swords ⚔️</a>
+            <a class="nav-link text-gray-400 hover:text-white" data-section="pentacles-section" onclick="showSection('pentacles-section', this)">Pentacles 🌿</a>
+            <a class="nav-link text-gray-400 hover:text-white" data-section="spreads-section" onclick="showSection('spreads-section', this)">Spreads ✨</a>
+        </nav>
+
+        <!-- New Welcome Screen Section -->
+        <section id="intro-section" class="card-section bg-gray-800 rounded-2xl p-6 sm:p-8 mb-12 shadow-lg">
+            <h2 class="text-2xl sm:text-3xl font-semibold mb-4 text-teal-200">Welcome to the Tarot Guide</h2>
+            <p class="text-gray-300 leading-relaxed mb-4">
+                The tarot is a collection of 78 cards, each with its own imagery, symbolism, and story. It's often used as a tool for self-reflection and guidance, helping us to gain new perspectives on our lives and the world around us.
+            </p>
+            <p class="text-gray-300 leading-relaxed">
+                The deck is split into two main sections:
+            </p>
+            <ul class="list-disc list-inside mt-4 pl-4 text-gray-300 leading-relaxed">
+                <li class="mb-2"><strong>The Major Arcana (22 cards):</strong> These are the trump cards that represent major life lessons, karmic influences, and significant milestones on a spiritual journey.</li>
+                <li><strong>The Minor Arcana (56 cards):</strong> These are organized into four suits—Wands, Cups, Swords, and Pentacles—and represent the day-to-day challenges, emotions, and practicalities of life.</li>
+            </ul>
+        </section>
+
+        <!-- Major Arcana Section -->
+        <section id="major-arcana-section" class="card-section mb-12 hidden">
+            <h2 class="text-3xl font-semibold mb-6 text-teal-200 text-center">The Major Arcana</h2>
+            <p class="text-center text-gray-400 mb-8">
+                These 22 cards represent major life lessons and karmic influences. They are the heart of the tarot deck. Click on a card to learn more.
+            </p>
+            <div id="major-arcana-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Wands Section -->
+        <section id="wands-section" class="card-section mb-12 hidden">
+            <h2 class="text-3xl font-semibold mb-6 text-yellow-300 text-center">The Suit of Wands</h2>
+            <p class="text-center text-gray-400 mb-8">
+                The Suit of Wands is associated with the element of Fire and represents creativity, passion, ambition, and business.
+            </p>
+            <div id="wands-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Cups Section -->
+        <section id="cups-section" class="card-section mb-12 hidden">
+            <h2 class="text-3xl font-semibold mb-6 text-blue-300 text-center">The Suit of Cups</h2>
+            <p class="text-center text-gray-400 mb-8">
+                The Suit of Cups is associated with the element of Water and represents emotions, intuition, relationships, and love.
+            </p>
+            <div id="cups-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Swords Section -->
+        <section id="swords-section" class="card-section mb-12 hidden">
+            <h2 class="text-3xl font-semibold mb-6 text-gray-300 text-center">The Suit of Swords</h2>
+            <p class="text-center text-gray-400 mb-8">
+                The Suit of Swords is associated with the element of Air and represents intellect, logic, truth, and challenges.
+            </p>
+            <div id="swords-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Pentacles Section -->
+        <section id="pentacles-section" class="card-section mb-12 hidden">
+            <h2 class="text-3xl font-semibold mb-6 text-green-300 text-center">The Suit of Pentacles</h2>
+            <p class="text-center text-gray-400 mb-8">
+                The Suit of Pentacles is associated with the element of Earth and represents the material world, finances, career, and physical health.
+            </p>
+            <div id="pentacles-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+                <!-- Cards will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Spreads Section -->
+        <section id="spreads-section" class="card-section mb-12 hidden">
+            <h2 class="text-3xl font-semibold mb-6 text-yellow-500 text-center">Common Spreads</h2>
+            <p class="text-center text-gray-400 mb-8">
+                Tarot spreads are arrangements of cards that offer a structured way to answer a question or gain insight into a situation.
+            </p>
+            <div id="spreads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <!-- Spreads will be dynamically inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 py-6 border-t border-gray-700">
+            <p class="text-gray-500">© 2025 The Tarot Guide. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Card Details Window -->
+    <div id="card-details-window" class="p-6 sm:p-8">
+        <div class="container mx-auto relative flex flex-col items-center">
+            <button class="absolute top-0 right-0 text-gray-400 hover:text-white text-3xl font-bold" onclick="hideCardDetails()">
+                &times;
+            </button>
+            <img id="card-details-image" class="mb-4" alt="Tarot Card Image">
+            <h3 id="card-details-title" class="text-3xl font-bold mb-2"></h3>
+            <p id="card-details-suit" class="text-lg text-gray-400 mb-4"></p>
+            
+            <h4 class="text-xl font-bold text-teal-300 mb-2">Upright Meaning</h4>
+            <p id="card-details-upright" class="text-gray-300 leading-relaxed mb-6"></p>
+
+            <h4 class="text-xl font-bold text-red-300 mb-2">Reversed Meaning</h4>
+            <p id="card-details-reversed" class="text-gray-300 leading-relaxed"></p>
+        </div>
+    </div>
+
+    <!-- Spread Details Window -->
+    <div id="spread-details-window" class="p-6 sm:p-8 fixed bottom-0 left-0 w-full h-full bg-gray-900 overflow-y-auto transform transition-transform duration-500 translate-y-full z-[101]">
+        <div class="container mx-auto relative">
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl font-bold" onclick="hideSpreadDetails()">&times;</button>
+            <h3 id="spread-details-title" class="text-3xl font-bold mb-4 text-yellow-300"></h3>
+            <p id="spread-details-intro" class="text-gray-300 leading-relaxed mb-6"></p>
+            <div id="spread-details-cards" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card positions and meanings will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        const tarotCards = {
+            'major-arcana-section': [
+                { name: 'The Fool', number: 0, suit: 'Major Arcana', upright: 'The Fool represents new beginnings, a leap of faith, and an adventurous spirit. It is the beginning of a journey, full of potential and innocence. This card encourages you to embrace the unknown and trust in the universe, even if the path ahead is unclear. It signifies a fresh start, free from the burdens of the past.', reversed: 'In reverse, The Fool can signal recklessness, a lack of planning, or a fear of taking a risk. You may be ignoring a crucial warning or acting irresponsibly. It can also suggest hesitation or being held back by a fear of the unknown, preventing you from starting a new chapter.' },
+                { name: 'The Magician', number: 1, suit: 'Major Arcana', upright: 'The Magician is a powerful card of skill, resourcefulness, and manifestation. It signifies that you have all the tools and abilities you need to achieve your goals. This is a time to take action, use your talents, and create your reality. The card inspires you to be confident and proactive, turning your ideas into tangible results.', reversed: 'Reversed, The Magician can point to manipulation, deceit, and a misuse of power. It may indicate that you are being dishonest or using your skills for selfish gain. It can also suggest a lack of willpower, feeling powerless, or being unable to bring your plans to fruition due to self-doubt.' },
+                { name: 'The High Priestess', number: 2, suit: 'Major Arcana', upright: 'The High Priestess is a symbol of intuition, mystery, and inner knowledge. This card urges you to look within, trust your gut feelings, and listen to your subconscious mind. It represents a time of quiet contemplation and introspection, where hidden truths and secrets are waiting to be discovered. The High Priestess is a guardian of sacred knowledge and a call to a deeper spiritual connection.', reversed: 'When reversed, The High Priestess may indicate that you are ignoring your intuition or inner voice. It can also signify a lack of self-trust, emotional instability, or secrets being revealed. You might be allowing external opinions to overshadow your own inner wisdom, leading to confusion and poor decisions.' },
+                { name: 'The Empress', number: 3, suit: 'Major Arcana', upright: 'The Empress embodies nurturing, fertility, and abundance. She represents creativity, motherhood, and a deep connection to nature. This card signifies a time of growth, pleasure, and prosperity. It encourages you to embrace your feminine energy, create beauty in your life, and nurture yourself and others. The Empress suggests that your projects, relationships, and creative endeavors are blossoming.', reversed: 'Reversed, The Empress can indicate a creative block, dependency, or neglect of your needs. It may suggest fertility issues or a feeling of being unfulfilled and disconnected from your creative side. It can also warn of overindulgence or neglecting your responsibilities, leading to stagnation.' },
+                { name: 'The Emperor', number: 4, suit: 'Major Arcana', upright: 'The Emperor represents authority, structure, and control. He is a symbol of a strong, stable leader and a father figure. This card signifies the importance of discipline, order, and logic. It encourages you to take charge of your life, set clear boundaries, and build a solid foundation for your ambitions. The Emperor is about creating and maintaining order through a rational approach.', reversed: 'Reversed, The Emperor can represent a misuse of power, controlling behavior, or a rigid and inflexible mindset. It may suggest a lack of discipline, a feeling of being dominated, or an inability to take control of a situation. This card warns against tyranny, stubbornness, and a lack of empathy.' },
+                { name: 'The Hierophant', number: 5, suit: 'Major Arcana', upright: 'The Hierophant represents tradition, conformity, and spiritual guidance. He is a teacher and a link to established institutions and beliefs. This card encourages you to seek out wisdom from a trusted mentor or spiritual guide. It signifies the importance of following tradition, adhering to a system, and learning from proven methods. The Hierophant suggests a need for structure and a desire to be part of a community.', reversed: 'Reversed, The Hierophant can indicate rebellion against tradition, unconventional beliefs, or being constrained by rigid rules. It may suggest that you are being too stubborn to learn from others or that you are challenging the status quo. It can also signal a desire to break free from restrictive systems and forge your own path.' },
+                { name: 'The Lovers', number: 6, suit: 'Major Arcana', upright: 'The Lovers card is all about choices, love, and relationships. It signifies a profound union, whether it is romantic, professional, or spiritual. It represents the harmony of opposing forces and the importance of making conscious, value-based decisions. This card often appears when you are at a crossroads and must choose a path that aligns with your true self.', reversed: 'Reversed, The Lovers can indicate conflict, disharmony, or a difficult choice. It may suggest a break in communication, a lack of trust in a relationship, or a decision that is not aligned with your values. It can also signify temptation, imbalance, or a struggle to find true connection.' },
+                { name: 'The Chariot', number: 7, suit: 'Major Arcana', upright: 'The Chariot represents victory, self-control, and determination. It signifies a journey driven by a powerful will to succeed. This card encourages you to harness your focus and discipline to overcome obstacles and achieve your goals. It is a symbol of momentum and forward movement, urging you to take control and move ahead with confidence and purpose.', reversed: 'Reversed, The Chariot can suggest a lack of direction, being pulled in different directions, or an inability to control one\'s emotions. It may indicate a loss of control, a stalled journey, or a defeat caused by a lack of discipline. This card warns against arrogance and forcing your will on others.' },
+                { name: 'Strength', number: 8, suit: 'Major Arcana', upright: 'Strength embodies courage, compassion, and inner fortitude. It is not about brute force but about a gentle, patient, and loving approach to mastering your inner demons and passions. This card signifies a quiet power and resilience that comes from within. It encourages you to face your fears with grace and confidence, demonstrating a deep inner strength.', reversed: 'Reversed, Strength can indicate a lack of self-control, weakness, or self-doubt. It may suggest that you are feeling overwhelmed by your emotions or an inability to face a difficult situation. This card warns against letting fear and anxiety paralyze you, causing you to lose confidence in your own abilities.' },
+                { name: 'The Hermit', number: 9, suit: 'Major Arcana', upright: 'The Hermit represents introspection, solitude, and soul-searching. This card signifies a period of withdrawal and quiet reflection, where you seek inner truth and wisdom. The Hermit encourages you to step away from the noise of the world to find clarity and guidance within yourself. It is a journey of self-discovery and a search for a deeper understanding of your purpose.', reversed: 'Reversed, The Hermit can suggest isolation, loneliness, or an unwillingness to be alone with yourself. It can also signify a fear of introspection or being too withdrawn from the world. This card warns against being overly cautious, avoiding social interaction, or feeling lost and directionless without external guidance.' },
+                { name: 'Wheel of Fortune', number: 10, suit: 'Major Arcana', upright: 'The Wheel of Fortune symbolizes cycles, destiny, and unexpected change. It reminds us that life is a constant series of ups and downs, and that luck can shift at any moment. This card suggests that a significant turn of events is on the horizon, whether for better or worse. It encourages you to embrace change and trust in the journey of fate.', reversed: 'Reversed, The Wheel of Fortune can indicate bad luck, a series of setbacks, or a feeling of being stuck in a rut. It may suggest that you are resisting change or that you are experiencing negative karma. This card warns that external forces may be working against you, and it is a time to be patient and prepare for the next cycle.' },
+                { name: 'Justice', number: 11, suit: 'Major Arcana', upright: 'Justice represents fairness, truth, and the law of cause and effect. It signifies that your actions will be judged fairly and that balance will be restored. This card encourages you to act with integrity and honesty, knowing that the universe will hold you accountable. It can also represent legal matters, contracts, or the need to make a balanced decision.', reversed: 'Reversed, Justice can indicate injustice, unfairness, or a lack of accountability. It may suggest a situation where a decision is biased or a legal matter is going against you. This card warns against dishonesty, a failure to accept responsibility, or a lack of empathy, leading to negative consequences.' },
+                { name: 'The Hanged Man', number: 12, suit: 'Major Arcana', upright: 'The Hanged Man represents a new perspective, letting go, and sacrifice. It signifies a time of pause and surrender, where you must let go of control to gain a new understanding. This card encourages you to look at your situation from a different angle and be willing to make sacrifices for a greater purpose. It is about releasing resistance and finding enlightenment through a state of suspension.', reversed: 'Reversed, The Hanged Man can suggest a resistance to change, an unwillingness to let go, or a feeling of being stuck. It may indicate that you are making unnecessary sacrifices or that you are trying to force a situation that is not meant to be. This card warns against martyrdom, stagnation, and a fear of moving forward.' },
+                { name: 'Death', number: 13, suit: 'Major Arcana', upright: 'Despite its name, Death is not about physical death, but about profound endings, transformation, and rebirth. This card signifies the end of a cycle, a major change, or a release of old patterns. It encourages you to embrace this transition and prepare for a fresh start. Death is a necessary step for new growth, clearing the way for something new to emerge.', reversed: 'Reversed, Death can indicate a resistance to change, stagnation, or a fear of letting go. It may suggest that you are clinging to a situation that is no longer serving you, preventing you from moving forward. This card warns against avoiding necessary endings, which can lead to a state of being stuck and unfulfilled.' },
+                { name: 'Temperance', number: 14, suit: 'Major Arcana', upright: 'Temperance is the card of balance, moderation, and harmony. It signifies a time of synthesis and integration, where you find a peaceful middle ground. This card encourages you to be patient and to combine different aspects of your life in a way that creates a harmonious flow. It suggests a need for calm, emotional stability, and finding a healthy balance between work and play.', reversed: 'Reversed, Temperance can indicate imbalance, a lack of moderation, or conflict. It may suggest that you are being impatient or that you are acting without proper thought, leading to disharmony. This card warns against extremes and a lack of self-control, which can disrupt your inner peace and stability.' },
+                { name: 'The Devil', number: 15, suit: 'Major Arcana', upright: 'The Devil represents bondage, addiction, and materialism. It signifies being trapped by your own desires, fears, or attachments. This card encourages you to recognize where you are giving away your power and to confront your own shadows. It is a powerful reminder that the chains are often of your own making and that you have the power to break free from them.', reversed: 'Reversed, The Devil can indicate a breaking free from addiction, releasing old patterns, or overcoming a major temptation. It suggests that you are beginning to recognize the source of your struggles and are taking the first steps toward liberation. This card signifies hope, release, and the reclaiming of your power.' },
+                { name: 'The Tower', number: 16, suit: 'Major Arcana', upright: 'The Tower is a card of sudden upheaval, chaos, and revelation. It signifies the destruction of old, flawed structures in your life, whether they are beliefs, relationships, or situations. This is a dramatic and often shocking change that, while painful, is necessary for your growth. The Tower clears the way for a more stable and honest foundation to be built.', reversed: 'Reversed, The Tower can suggest a fear of change or a resistance to a necessary upheaval. It may indicate that you are avoiding a difficult truth, prolonging a painful situation, or living in denial. This card warns that if you don\'t confront the truth, the inevitable change will be even more disruptive.' },
+                { name: 'The Star', number: 17, suit: 'Major Arcana', upright: 'The Star represents hope, inspiration, and renewed serenity. After the upheaval of The Tower, this card brings a sense of calm and clarity. It signifies a feeling of hope for the future, a renewed sense of purpose, and a deep connection to the universe. The Star encourages you to have faith in yourself and to believe that a brighter future is on the horizon.', reversed: 'Reversed, The Star can indicate a feeling of despair, a lack of hope, or a disconnection from your inner guidance. It may suggest that you are feeling uninspired or that you have lost faith in your abilities. This card warns against pessimism and a negative outlook, which can prevent you from seeing the light at the end of the tunnel.' },
+                { name: 'The Moon', number: 18, suit: 'Major Arcana', upright: 'The Moon is a card of illusion, intuition, and the subconscious mind. It signifies a time of uncertainty and hidden fears, where things are not as they appear. This card encourages you to trust your intuition and to navigate through the darkness with your inner guidance. The Moon represents the power of dreams, imagination, and the parts of yourself that are not yet fully understood.', reversed: 'Reversed, The Moon can indicate the release of fear, confusion clearing up, or an illusion being revealed. It suggests that you are beginning to see a situation for what it truly is. This card signifies a time of clarity, where you are able to face your fears and move forward with a new understanding.' },
+                { name: 'The Sun', number: 19, suit: 'Major Arcana', upright: 'The Sun represents joy, success, and celebration. It is a card of pure happiness and vitality, signifying a time of great success and positivity. This card encourages you to embrace your inner child, radiate optimism, and share your light with others. The Sun is a symbol of clear vision, a positive outcome, and a fulfilling life.', reversed: 'Reversed, The Sun can indicate a lack of joy, a feeling of sadness, or a temporary block in your happiness. It may suggest that you are being pessimistic or that you are struggling to see the good in a situation. This card warns against a clouded perspective and a need to reconnect with your inner light.' },
+                { name: 'Judgement', number: 20, suit: 'Major Arcana', upright: 'Judgement represents a reckoning, an awakening, and a call to a higher purpose. It signifies a time of evaluation and a deep understanding of your past actions. This card encourages you to forgive yourself, release the past, and answer the call to your true self. Judgement is about finding clarity and making a decision that aligns with your soul’s purpose.', reversed: 'Reversed, Judgement can indicate self-doubt, a fear of judgment, or an unwillingness to forgive yourself. It may suggest that you are ignoring a call to a higher purpose or that you are avoiding a necessary evaluation of your life. This card warns against being overly critical of yourself and others, leading to stagnation.' },
+                { name: 'The World', number: 21, suit: 'Major Arcana', upright: 'The World represents completion, fulfillment, and triumph. It signifies the end of a major cycle and the successful achievement of a goal. This card encourages you to celebrate your accomplishments and to recognize your place in the universe. The World is a symbol of integration and a sense of belonging, signifying that you have found your purpose and are ready for the next adventure.', reversed: 'Reversed, The World can indicate a delay in completion, a lack of closure, or an unfinished journey. It may suggest that you are feeling stuck or that you are struggling to find your place in the world. This card warns against a feeling of being unfulfilled, and a need to tie up loose ends before moving on.' },
+            ],
+            'wands-section': [
+                { name: 'Ace of Wands', suit: 'Wands', upright: 'The Ace of Wands represents a new creative spark, inspiration, and a burst of energy. It is a call to action and a fresh start in your creative endeavors or career. This card encourages you to seize the moment and pursue a new passion or idea with enthusiasm. It is a powerful symbol of new beginnings and the start of an exciting journey.', reversed: 'Reversed, the Ace of Wands can indicate a delay in a project, a lack of motivation, or a creative block. It may suggest that you are feeling uninspired or that you are struggling to find the energy to begin something new. This card warns against a fear of taking risks and a need to reconnect with your passion.' },
+                { name: 'Two of Wands', suit: 'Wands', upright: 'The Two of Wands is about planning, future visions, and making a decision. It signifies a moment of looking ahead and considering your options before taking the next step. This card encourages you to expand your horizons and to make a choice that will set you on a new path. It is a card of potential, power, and future opportunities.', reversed: 'Reversed, the Two of Wands can indicate a fear of the unknown, an inability to make a decision, or a delay in your plans. It may suggest that you are feeling stuck or that you are being held back by a lack of confidence. This card warns against a failure to plan or a lack of foresight, leading to missed opportunities.' },
+                { name: 'Three of Wands', suit: 'Wands', upright: 'The Three of Wands represents foresight, expansion, and partnership. It signifies that your plans are starting to bear fruit and that you should look beyond your immediate surroundings. This card encourages you to collaborate with others and to embrace new opportunities that will lead to further growth. It is a card of positive progress and a time to look to the future with confidence.', reversed: 'Reversed, the Three of Wands can suggest a delay in a project, unexpected obstacles, or a lack of progress. It may indicate a failure to collaborate or a feeling of being limited by your current situation. This card warns against a lack of vision and an inability to adapt to new circumstances.' },
+                { name: 'Four of Wands', suit: 'Wands', upright: 'The Four of Wands is a card of celebration, harmony, and a happy home. It signifies a period of stability and a joyous gathering with loved ones. This card represents a milestone or a successful completion of a project, urging you to celebrate your achievements. It is a symbol of security, peace, and a sense of belonging in your personal life.', reversed: 'Reversed, the Four of Wands can indicate a lack of harmony, instability, or a delay in a celebration. It may suggest that you are feeling disconnected from your family or that you are struggling to find a sense of peace. This card warns against a lack of support and a need to find balance in your home life.' },
+                { name: 'Five of Wands', suit: 'Wands', upright: 'The Five of Wands represents conflict, competition, and minor struggles. It signifies a time of disagreement and a clash of ideas. This card encourages you to engage in a healthy debate, but to avoid unnecessary drama. It is a symbol of creative conflict that can lead to a stronger outcome if handled correctly. The challenge is to find a way to work together.', reversed: 'Reversed, the Five of Wands can indicate a resolution to a conflict, an end to a struggle, or a withdrawal from a competition. It may suggest that you are avoiding a confrontation or that you are feeling overwhelmed by a difficult situation. This card warns against a lack of cooperation and a need to find a peaceful solution.' },
+                { name: 'Six of Wands', suit: 'Wands', upright: 'The Six of Wands is a card of victory, public recognition, and success. It signifies a triumph after a long struggle and a moment of celebration. This card encourages you to bask in the glory of your achievements and to share your success with others. It is a symbol of confidence, self-assurance, and the admiration of your peers.', reversed: 'Reversed, the Six of Wands can indicate a delay in victory, a feeling of being unrecognized, or a lack of confidence. It may suggest that you are struggling with self-doubt or that you are not receiving the credit you deserve. This card warns against arrogance and a need to find a new sense of purpose.' },
+                { name: 'Seven of Wands', suit: 'Wands', upright: 'The Seven of Wands represents defense, standing your ground, and perseverance. It signifies that you are being challenged and that you must defend your position. This card encourages you to be confident in your beliefs and to stand firm against opposition. It is a symbol of courage and a call to fight for what you believe in, even if you are feeling overwhelmed.', reversed: 'Reversed, the Seven of Wands can indicate a feeling of being overwhelmed, giving up, or a lack of confidence. It may suggest that you are not standing up for yourself or that you are allowing others to dominate you. This card warns against a failure to defend your position, leading to a loss of ground.' },
+                { name: 'Eight of Wands', suit: 'Wands', upright: 'The Eight of Wands is a card of rapid action, movement, and quick progress. It signifies a period of fast-paced change and a clear path forward. This card encourages you to seize the moment and to act on your ideas without delay. It is a powerful symbol of momentum and a time to move forward with speed and determination.', reversed: 'Reversed, the Eight of Wands can indicate a delay, a feeling of being stalled, or an unexpected obstacle. It may suggest that you are moving too fast or that you are not prepared for a sudden change. This card warns against impatience and a need to slow down and consider your options.' },
+                { name: 'Nine of Wands', suit: 'Wands', upright: 'The Nine of Wands represents resilience, courage, and a last stand. It signifies that you have faced many challenges and that you are bruised but not broken. This card encourages you to stay strong and to persevere through the final stretch. It is a symbol of inner strength and a reminder that you are closer to the finish line than you think.', reversed: 'Reversed, the Nine of Wands can suggest a feeling of exhaustion, a lack of resilience, or a fear of the next challenge. It may indicate that you are giving up before the end or that you are struggling with a difficult situation. This card warns against a lack of courage and a need to rest and recharge.' },
+                { name: 'Ten of Wands', suit: 'Wands', upright: 'The Ten of Wands is a card of a heavy burden, responsibility, and being overworked. It signifies that you are carrying too much on your shoulders and that you need to delegate or let go of some of your responsibilities. This card encourages you to find a way to ease your load and to avoid burnout. It is a symbol of a difficult period that requires careful management.', reversed: 'Reversed, the Ten of Wands can indicate a release of a burden, a feeling of relief, or a new approach to a problem. It may suggest that you are finally letting go of a responsibility that was holding you back. This card warns against taking on too much and a need to find a better work-life balance.' },
+                { name: 'Page of Wands', suit: 'Wands', upright: 'The Page of Wands represents inspiration, new ideas, and a message of creativity. It signifies the beginning of a new creative project or a call to an exciting adventure. This card encourages you to be curious, playful, and to explore your passions. It is a symbol of a fresh start and a youthful enthusiasm for life.', reversed: 'Reversed, the Page of Wands can indicate a lack of creativity, a delay in a new idea, or a feeling of being uninspired. It may suggest that you are being too cautious or that you are afraid to take a risk. This card warns against a lack of enthusiasm and a need to reconnect with your passion.' },
+                { name: 'Knight of Wands', suit: 'Wands', upright: 'The Knight of Wands is a card of action, adventure, and a passionate journey. He is a symbol of a fearless and energetic individual who is ready to take on the world. This card encourages you to pursue your goals with confidence and to embrace new opportunities with a sense of adventure. It is a powerful symbol of ambition and forward movement.', reversed: 'Reversed, the Knight of Wands can indicate impatience, impulsiveness, or a lack of direction. It may suggest that you are acting without thinking or that you are moving too fast, leading to mistakes. This card warns against a lack of foresight and a need to slow down and be more strategic.' },
+                { name: 'Queen of Wands', suit: 'Wands', upright: 'The Queen of Wands represents creativity, confidence, and independence. She is a powerful and charismatic leader who is full of energy and passion. This card encourages you to be yourself, to be confident in your abilities, and to inspire others with your positive attitude. It is a symbol of a warm and nurturing spirit that is also fiercely independent.', reversed: 'Reversed, the Queen of Wands can indicate a lack of confidence, a feeling of being overwhelmed, or a desire for control. It may suggest that you are struggling with your ego or that you are being too demanding of others. This card warns against a lack of self-worth and a need to find your inner strength.' },
+                { name: 'King of Wands', suit: 'Wands', upright: 'The King of Wands represents leadership, vision, and a natural leader. He is a charismatic and influential figure who is full of energy and is able to inspire others. This card encourages you to take charge of your life, to be confident in your decisions, and to lead by example. It is a symbol of a visionary who is able to turn their dreams into a reality.', reversed: 'Reversed, the King of Wands can indicate a misuse of power, a lack of vision, or a feeling of being a tyrannical leader. It may suggest that you are being too controlling or that you are struggling to find a clear path forward. This card warns against a lack of empathy and a need to listen to others.' },
+            ],
+            'cups-section': [
+                { name: 'Ace of Cups', suit: 'Cups', upright: 'The Ace of Cups represents a new emotional beginning, love, and emotional fulfillment. It is a powerful symbol of a fresh start in your relationships and a call to open your heart. This card encourages you to embrace your emotions, to be compassionate, and to allow love to flow into your life. It is a card of new connections and deep emotional healing.', reversed: 'Reversed, the Ace of Cups can indicate a blockage of emotions, a lack of love, or an unfulfilled desire. It may suggest that you are struggling to express your feelings or that you are feeling disconnected from your emotional side. This card warns against a fear of intimacy and a need to heal your heart.' },
+                { name: 'Two of Cups', suit: 'Cups', upright: 'The Two of Cups represents partnership, connection, and mutual attraction. It is a symbol of a deep and meaningful bond, whether it is romantic or platonic. This card encourages you to embrace your relationships and to find a sense of harmony with others. It is a powerful symbol of love, respect, and a shared connection.', reversed: 'Reversed, the Two of Cups can indicate a conflict in a relationship, a lack of trust, or a feeling of being disconnected from your partner. It may suggest a misunderstanding or a need to work on your communication skills. This card warns against a lack of emotional support and a need to find a sense of balance.' },
+                { name: 'Three of Cups', suit: 'Cups', upright: 'The Three of Cups is a card of celebration, friendship, and community. It signifies a time of joy, social gatherings, and a sense of belonging with your loved ones. This card encourages you to celebrate your achievements and to share your happiness with others. It is a symbol of a supportive community and a time to enjoy the fruits of your labor.', reversed: 'Reversed, the Three of Cups can indicate a conflict in a friendship, a lack of celebration, or a feeling of being excluded. It may suggest that you are struggling with your relationships or that you are feeling disconnected from your social circle. This card warns against gossip and a need to find a new sense of community.' },
+                { name: 'Four of Cups', suit: 'Cups', upright: 'The Four of Cups represents apathy, boredom, and missed opportunities. It signifies a feeling of being unfulfilled, even when you have everything you need. This card encourages you to look closely at your life and to recognize the opportunities that you may be overlooking. It is a powerful reminder that sometimes you have to look beyond your own discontent to find true happiness.', reversed: 'Reversed, the Four of Cups can indicate a new opportunity, a renewed sense of purpose, or a feeling of excitement. It may suggest that you are finally ready to embrace a new challenge or that you are finding a new sense of joy in your life. This card warns against a lack of gratitude and a need to be more open to new experiences.' },
+                { name: 'Five of Cups', suit: 'Cups', upright: 'The Five of Cups represents loss, regret, and disappointment. It signifies a time of sadness and a focus on what has been lost, rather than what remains. This card encourages you to acknowledge your pain, but to also recognize the blessings that are still present in your life. It is a powerful reminder that even in the midst of loss, there is still hope for a new beginning.', reversed: 'Reversed, the Five of Cups can indicate a release of grief, a new sense of hope, or a willingness to forgive. It may suggest that you are finally ready to move on from a difficult situation and to find a new sense of peace. This card warns against dwelling on the past and a need to focus on the future.' },
+                { name: 'Six of Cups', suit: 'Cups', upright: 'The Six of Cups is a card of nostalgia, childhood memories, and innocence. It signifies a return to the past, whether through memories or a visit to an old friend. This card encourages you to reconnect with your inner child and to find joy in simple pleasures. It is a powerful symbol of forgiveness, healing, and a sense of innocence.', reversed: 'Reversed, the Six of Cups can indicate a fear of the past, a feeling of being stuck in old patterns, or an unwillingness to let go of a past relationship. It may suggest that you are being held back by a difficult memory or a need to heal from a past trauma. This card warns against dwelling on the past and a need to focus on the future.' },
+                { name: 'Seven of Cups', suit: 'Cups', upright: 'The Seven of Cups represents choices, illusion, and wishful thinking. It signifies a time of being overwhelmed by too many options and a need to find clarity. This card encourages you to be careful what you wish for and to focus on what is real, rather than what is an illusion. It is a powerful reminder that a lack of focus can lead to a lack of progress.', reversed: 'Reversed, the Seven of Cups can indicate a sense of clarity, a new direction, or a feeling of being in control. It may suggest that you are finally ready to make a decision or that you are seeing a situation for what it truly is. This card warns against a lack of focus and a need to be more mindful of your choices.' },
+                { name: 'Eight of Cups', suit: 'Cups', upright: 'The Eight of Cups is a card of abandonment, emotional transition, and searching for a deeper meaning. It signifies a time of walking away from a situation that no longer serves you. This card encourages you to trust your intuition and to leave behind what is holding you back. It is a powerful symbol of a journey of self-discovery and a quest for a more fulfilling life.', reversed: 'Reversed, the Eight of Cups can indicate a fear of change, a feeling of being stuck, or an unwillingness to move on. It may suggest that you are being held back by a difficult relationship or a fear of the unknown. This card warns against a lack of courage and a need to find a new sense of purpose.' },
+                { name: 'Nine of Cups', suit: 'Cups', upright: 'The Nine of Cups represents wish fulfillment, contentment, and satisfaction. It is a powerful symbol of a dream come true and a feeling of complete happiness. This card encourages you to be grateful for all that you have and to share your joy with others. It is a powerful reminder that you have worked hard to achieve your goals and that you deserve to celebrate.', reversed: 'Reversed, the Nine of Cups can indicate a feeling of unfulfillment, a lack of happiness, or a desire for more. It may suggest that you are being too greedy or that you are not appreciating what you have. This card warns against a lack of gratitude and a need to find a sense of peace.' },
+                { name: 'Ten of Cups', suit: 'Cups', upright: 'The Ten of Cups represents complete emotional happiness, harmony, and joy. It is a powerful symbol of a happy family, a loving relationship, and a sense of belonging. This card encourages you to cherish your loved ones and to create a home that is filled with love and peace. It is a powerful reminder that true happiness comes from within.', reversed: 'Reversed, the Ten of Cups can indicate a conflict in a family, a lack of harmony, or a feeling of being disconnected from your loved ones. It may suggest that you are struggling with your relationships or that you are feeling unfulfilled in your home life. This card warns against a lack of communication and a need to find a sense of peace.' },
+                { name: 'Page of Cups', suit: 'Cups', upright: 'The Page of Cups represents creativity, emotional messages, and intuition. It is a symbol of a new emotional beginning, a call to be more open to your feelings, and a time to explore your creative side. This card encourages you to be curious, playful, and to trust your gut feelings. It is a powerful reminder that new opportunities can come from unexpected places.', reversed: 'Reversed, the Page of Cups can indicate a lack of creativity, a delay in a new idea, or a feeling of being uninspired. It may suggest that you are being too cautious or that you are afraid to take a risk. This card warns against a lack of enthusiasm and a need to find your creative spark.' },
+                { name: 'Knight of Cups', suit: 'Cups', upright: 'The Knight of Cups represents romance, charm, and an invitation to love. He is a symbol of a romantic individual who is full of passion and is ready to pursue a new relationship. This card encourages you to be more open to love and to express your feelings with sincerity. It is a powerful symbol of new beginnings and a time to embrace your emotions.', reversed: 'Reversed, the Knight of Cups can indicate a lack of romance, a feeling of being unfulfilled, or a rejection of an offer. It may suggest that you are being too emotional or that you are being held back by a fear of intimacy. This card warns against a lack of communication and a need to be more open to love.' },
+                { name: 'Queen of Cups', suit: 'Cups', upright: 'The Queen of Cups represents compassion, intuition, and emotional security. She is a symbol of a caring and nurturing individual who is full of empathy and is able to connect with others on a deep level. This card encourages you to be more compassionate, to trust your intuition, and to find a sense of inner peace. It is a powerful symbol of emotional healing and a call to be more mindful of your feelings.', reversed: 'Reversed, the Queen of Cups can indicate a lack of compassion, a feeling of being overwhelmed, or a manipulation of emotions. It may suggest that you are being too emotional or that you are struggling to find a sense of inner peace. This card warns against a lack of empathy and a need to listen to others.' },
+                { name: 'King of Cups', suit: 'Cups', upright: 'The King of Cups represents emotional balance, control, and a wise leader. He is a symbol of a mature and stable individual who is able to express his emotions in a healthy way. This card encourages you to be more balanced, to be in control of your feelings, and to lead with a sense of compassion. It is a powerful symbol of emotional maturity and a call to be more mindful of your actions.', reversed: 'Reversed, the King of Cups can indicate a lack of emotional control, a feeling of being overwhelmed, or a manipulation of power. It may suggest that you are being too emotional or that you are struggling to find a sense of inner peace. This card warns against a lack of empathy and a need to listen to others.' },
+            ],
+            'swords-section': [
+                { name: 'Ace of Swords', suit: 'Swords', upright: 'The Ace of Swords represents a breakthrough, a new idea, and clarity. It is a powerful symbol of a new mental beginning, a fresh perspective, and a call to a new way of thinking. This card encourages you to be honest with yourself and to embrace the truth, even if it is difficult. It is a powerful reminder that clarity and truth are the keys to a new beginning.', reversed: 'Reversed, the Ace of Swords can indicate a lack of clarity, a confusion of ideas, or a misuse of power. It may suggest that you are struggling to find a new perspective or that you are being dishonest with yourself. This card warns against a lack of honesty and a need to find a new sense of purpose.' },
+                { name: 'Two of Swords', suit: 'Swords', upright: 'The Two of Swords represents a difficult choice, a stalemate, and indecision. It signifies a time of being at a crossroads, where you must make a decision that will change your life. This card encourages you to weigh your options carefully and to find a sense of balance. It is a powerful reminder that sometimes the most difficult decisions are the most important.', reversed: 'Reversed, the Two of Swords can indicate a resolution to a conflict, a new decision, or a feeling of being in control. It may suggest that you are finally ready to make a decision or that you are seeing a situation for what it truly is. This card warns against a lack of focus and a need to be more mindful of your choices.' },
+                { name: 'Three of Swords', suit: 'Swords', upright: 'The Three of Swords represents heartbreak, sorrow, and pain. It signifies a time of loss and emotional pain, where you must confront your grief. This card encourages you to acknowledge your pain, but to also remember that healing is possible. It is a powerful reminder that even in the midst of sorrow, there is still hope for a new beginning.', reversed: 'Reversed, the Three of Swords can indicate a healing from a heartache, a new sense of hope, or a willingness to forgive. It may suggest that you are finally ready to move on from a difficult situation and to find a new sense of peace. This card warns against dwelling on the past and a need to focus on the future.' },
+                { name: 'Four of Swords', suit: 'Swords', upright: 'The Four of Swords represents rest, recovery, and contemplation. It signifies a time of withdrawal and quiet reflection, where you must recharge your batteries. This card encourages you to take a break from the noise of the world and to find a sense of inner peace. It is a powerful reminder that sometimes the best way to move forward is to take a step back.', reversed: 'Reversed, the Four of Swords can indicate a feeling of being restless, a lack of peace, or an unwillingness to rest. It may suggest that you are being too busy or that you are not giving yourself the time to heal. This card warns against a lack of self-care and a need to find a sense of balance.' },
+                { name: 'Five of Swords', suit: 'Swords', upright: 'The Five of Swords represents conflict, defeat, and a hollow victory. It signifies a time of disagreement and a clash of ideas. This card encourages you to engage in a healthy debate, but to avoid unnecessary drama. It is a powerful reminder that sometimes the most difficult situations are the most important.', reversed: 'Reversed, the Five of Swords can indicate a resolution to a conflict, an end to a struggle, or a withdrawal from a competition. It may suggest that you are avoiding a confrontation or that you are feeling overwhelmed by a difficult situation. This card warns against a lack of cooperation and a need to find a peaceful solution.' },
+                { name: 'Six of Swords', suit: 'Swords', upright: 'The Six of Swords represents transition, moving on, and leaving difficulties behind. It signifies a time of moving forward from a difficult situation to a more peaceful one. This card encourages you to embrace change and to let go of what is holding you back. It is a powerful reminder that sometimes the best way to move forward is to leave the past behind.', reversed: 'Reversed, the Six of Swords can indicate a fear of change, a feeling of being stuck, or an unwillingness to move on. It may suggest that you are being held back by a difficult situation or a fear of the unknown. This card warns against a lack of courage and a need to find a new sense of purpose.' },
+                { name: 'Seven of Swords', suit: 'Swords', upright: 'The Seven of Swords represents deception, betrayal, and a cunning strategy. It signifies a time of being dishonest or being deceived by others. This card encourages you to be careful who you trust and to be honest with yourself. It is a powerful reminder that honesty and integrity are the keys to a new beginning.', reversed: 'Reversed, the Seven of Swords can indicate a new beginning, a confession, or a feeling of being in control. It may suggest that you are finally ready to be honest with yourself or that you are seeing a situation for what it truly is. This card warns against a lack of honesty and a need to find a new sense of purpose.' },
+                { name: 'Eight of Swords', suit: 'Swords', upright: 'The Eight of Swords represents restriction, feeling trapped, and self-imposed limitations. It signifies a time of feeling powerless and unable to move forward. This card encourages you to recognize where you are giving away your power and to confront your own fears. It is a powerful reminder that the chains are often of your own making and that you have the power to break free from them.', reversed: 'Reversed, the Eight of Swords can indicate a breaking free from addiction, a new sense of freedom, or a feeling of being in control. It may suggest that you are finally ready to take control of your life or that you are seeing a situation for what it truly is. This card warns against a lack of self-worth and a need to find your inner strength.' },
+                { name: 'Nine of Swords', suit: 'Swords', upright: 'The Nine of Swords represents anxiety, worry, and nightmares. It signifies a time of stress and a feeling of being overwhelmed by your fears. This card encourages you to confront your anxieties and to find a sense of peace. It is a powerful reminder that sometimes the most difficult situations are the most important.', reversed: 'Reversed, the Nine of Swords can indicate a release of anxiety, a new sense of hope, or a feeling of being in control. It may suggest that you are finally ready to move on from a difficult situation and to find a new sense of peace. This card warns against dwelling on the past and a need to focus on the future.' },
+                { name: 'Ten of Swords', suit: 'Swords', upright: 'The Ten of Swords represents finality, rock bottom, and a painful ending. It signifies the end of a difficult cycle and a time of release. This card encourages you to acknowledge your pain, but to also remember that healing is possible. It is a powerful reminder that even in the midst of sorrow, there is still hope for a new beginning.', reversed: 'Reversed, the Ten of Swords can indicate a healing from a heartache, a new sense of hope, or a willingness to forgive. It may suggest that you are finally ready to move on from a difficult situation and to find a new sense of peace. This card warns against dwelling on the past and a need to focus on the future.' },
+                { name: 'Page of Swords', suit: 'Swords', upright: 'The Page of Swords represents curiosity, new ideas, and a desire for truth. It is a symbol of a new mental beginning, a fresh perspective, and a call to a new way of thinking. This card encourages you to be honest with yourself and to embrace the truth, even if it is difficult. It is a powerful reminder that clarity and truth are the keys to a new beginning.', reversed: 'Reversed, the Page of Swords can indicate a lack of clarity, a confusion of ideas, or a misuse of power. It may suggest that you are struggling to find a new perspective or that you are being dishonest with yourself. This card warns against a lack of honesty and a need to find a new sense of purpose.' },
+                { name: 'Knight of Swords', suit: 'Swords', upright: 'The Knight of Swords represents ambition, impulsiveness, and a driven force. He is a symbol of a fearless and energetic individual who is ready to take on the world. This card encourages you to pursue your goals with confidence and to embrace new opportunities with a sense of adventure. It is a powerful symbol of ambition and forward movement.', reversed: 'Reversed, the Knight of Swords can indicate impatience, impulsiveness, or a lack of direction. It may suggest that you are acting without thinking or that you are moving too fast, leading to mistakes. This card warns against a lack of foresight and a need to slow down and be more strategic.' },
+                { name: 'Queen of Swords', suit: 'Swords', upright: 'The Queen of Swords represents sharp intellect, honesty, and an independent spirit. She is a symbol of a mature and stable individual who is able to express her emotions in a healthy way. This card encourages you to be more balanced, to be in control of your feelings, and to lead with a sense of compassion. It is a powerful symbol of emotional maturity and a call to be more mindful of your actions.', reversed: 'Reversed, the Queen of Swords can indicate a lack of emotional control, a feeling of being overwhelmed, or a manipulation of power. It may suggest that you are being too emotional or that you are struggling to find a sense of inner peace. This card warns against a lack of empathy and a need to listen to others.' },
+                { name: 'King of Swords', suit: 'Swords', upright: 'The King of Swords represents intellect, authority, and a fair leader. He is a symbol of a mature and stable individual who is able to express his emotions in a healthy way. This card encourages you to be more balanced, to be in control of your feelings, and to lead with a sense of compassion. It is a powerful symbol of emotional maturity and a call to be more mindful of your actions.', reversed: 'Reversed, the King of Swords can indicate a lack of emotional control, a feeling of being overwhelmed, or a manipulation of power. It may suggest that you are being too emotional or that you are struggling to find a sense of inner peace. This card warns against a lack of empathy and a need to listen to others.' },
+            ],
+            'pentacles-section': [
+                { name: 'Ace of Pentacles', suit: 'Pentacles', upright: 'The Ace of Pentacles represents a new financial opportunity, a new job, and a fresh start. It is a powerful symbol of a new beginning in your material world and a call to a new way of thinking. This card encourages you to be honest with yourself and to embrace the truth, even if it is difficult. It is a powerful reminder that clarity and truth are the keys to a new beginning.', reversed: 'Reversed, the Ace of Pentacles can indicate a lack of clarity, a confusion of ideas, or a misuse of power. It may suggest that you are struggling to find a new perspective or that you are being dishonest with yourself. This card warns against a lack of honesty and a need to find a new sense of purpose.' },
+                { name: 'Two of Pentacles', suit: 'Pentacles', upright: 'The Two of Pentacles represents balance, juggling responsibilities, and adaptability. It signifies a time of being at a crossroads, where you must make a decision that will change your life. This card encourages you to weigh your options carefully and to find a sense of balance. It is a powerful reminder that sometimes the most difficult decisions are the most important.', reversed: 'Reversed, the Two of Pentacles can indicate a resolution to a conflict, a new decision, or a feeling of being in control. It may suggest that you are finally ready to make a decision or that you are seeing a situation for what it truly is. This card warns against a lack of focus and a need to be more mindful of your choices.' },
+                { name: 'Three of Pentacles', suit: 'Pentacles', upright: 'The Three of Pentacles represents teamwork, collaboration, and learning. It signifies a time of working together with others to achieve a common goal. This card encourages you to embrace your relationships and to find a sense of harmony with others. It is a powerful reminder that true happiness comes from within.', reversed: 'Reversed, the Three of Pentacles can indicate a conflict in a relationship, a lack of trust, or a feeling of being disconnected from your partner. It may suggest a misunderstanding or a need to work on your communication skills. This card warns against a lack of emotional support and a need to find a sense of balance.' },
+                { name: 'Four of Pentacles', suit: 'Pentacles', upright: 'The Four of Pentacles represents security, control, and possessiveness. It signifies a time of being at a crossroads, where you must make a decision that will change your life. This card encourages you to weigh your options carefully and to find a sense of balance. It is a powerful reminder that sometimes the most difficult decisions are the most important.', reversed: 'Reversed, the Four of Pentacles can indicate a resolution to a conflict, a new decision, or a feeling of being in control. It may suggest that you are finally ready to make a decision or that you are seeing a situation for what it truly is. This card warns against a lack of focus and a need to be more mindful of your choices.' },
+                { name: 'Five of Pentacles', suit: 'Pentacles', upright: 'The Five of Pentacles represents hardship, poverty, and feeling left out. It signifies a time of sadness and a focus on what has been lost, rather than what remains. This card encourages you to acknowledge your pain, but to also recognize the blessings that are still present in your life. It is a powerful reminder that even in the midst of loss, there is still hope for a new beginning.', reversed: 'Reversed, the Five of Pentacles can indicate a release of grief, a new sense of hope, or a willingness to forgive. It may suggest that you are finally ready to move on from a difficult situation and to find a new sense of peace. This card warns against dwelling on the past and a need to focus on the future.' },
+                { name: 'Six of Pentacles', suit: 'Pentacles', upright: 'The Six of Pentacles represents generosity, charity, and giving to others. It signifies a time of being in control of your life and a feeling of being in control. This card encourages you to be more generous and to give to others. It is a powerful reminder that generosity and charity are the keys to a new beginning.', reversed: 'Reversed, the Six of Pentacles can indicate a lack of generosity, a feeling of being selfish, or a misuse of power. It may suggest that you are being too controlling or that you are struggling to find a clear path forward. This card warns against a lack of empathy and a need to listen to others.' },
+                { name: 'Seven of Pentacles', suit: 'Pentacles', upright: 'The Seven of Pentacles represents patience, perseverance, and evaluating your progress. It signifies a time of taking a break from the noise of the world and to find a sense of inner peace. This card encourages you to be patient and to find a sense of balance. It is a powerful reminder that sometimes the best way to move forward is to take a step back.', reversed: 'Reversed, the Seven of Pentacles can indicate a feeling of being restless, a lack of peace, or an unwillingness to rest. It may suggest that you are being too busy or that you are not giving yourself the time to heal. This card warns against a lack of self-care and a need to find a sense of balance.' },
+                { name: 'Eight of Pentacles', suit: 'Pentacles', upright: 'The Eight of Pentacles represents dedication, skill, and mastery. It signifies a time of working together with others to achieve a common goal. This card encourages you to embrace your relationships and to find a sense of harmony with others. It is a powerful reminder that true happiness comes from within.', reversed: 'Reversed, the Eight of Pentacles can indicate a conflict in a relationship, a lack of trust, or a feeling of being disconnected from your partner. It may suggest a misunderstanding or a need to work on your communication skills. This card warns against a lack of emotional support and a need to find a sense of balance.' },
+                { name: 'Nine of Pentacles', suit: 'Pentacles', upright: 'The Nine of Pentacles represents abundance, independence, and luxury. It is a powerful symbol of a dream come true and a feeling of complete happiness. This card encourages you to be grateful for all that you have and to share your joy with others. It is a powerful reminder that you have worked hard to achieve your goals and that you deserve to celebrate.', reversed: 'Reversed, the Nine of Pentacles can indicate a feeling of unfulfillment, a lack of happiness, or a desire for more. It may suggest that you are being too greedy or that you are not appreciating what you have. This card warns against a lack of gratitude and a need to find a sense of peace.' },
+                { name: 'Ten of Pentacles', suit: 'Pentacles', upright: 'The Ten of Pentacles represents wealth, family legacy, and a sense of belonging. It is a powerful symbol of a happy family, a loving relationship, and a sense of belonging. This card encourages you to cherish your loved ones and to create a home that is filled with love and peace. It is a powerful reminder that true happiness comes from within.', reversed: 'Reversed, the Ten of Pentacles can indicate a conflict in a family, a lack of harmony, or a feeling of being disconnected from your loved ones. It may suggest that you are struggling with your relationships or that you are feeling unfulfilled in your home life. This card warns against a lack of communication and a need to find a sense of peace.' },
+                { name: 'Page of Pentacles', suit: 'Pentacles', upright: 'The Page of Pentacles represents a new opportunity, inspiration, and a practical start. It is a symbol of a new beginning in your material world and a call to a new way of thinking. This card encourages you to be honest with yourself and to embrace the truth, even if it is difficult. It is a powerful reminder that clarity and truth are the keys to a new beginning.', reversed: 'Reversed, the Page of Pentacles can indicate a lack of clarity, a confusion of ideas, or a misuse of power. It may suggest that you are struggling to find a new perspective or that you are being dishonest with yourself. This card warns against a lack of honesty and a need to find a new sense of purpose.' },
+                { name: 'Knight of Pentacles', suit: 'Pentacles', upright: 'The Knight of Pentacles represents patience, hard work, and a slow but steady approach. He is a symbol of a fearless and energetic individual who is ready to take on the world. This card encourages you to pursue your goals with confidence and to embrace new opportunities with a sense of adventure. It is a powerful symbol of ambition and forward movement.', reversed: 'Reversed, the Knight of Pentacles can indicate impatience, impulsiveness, or a lack of direction. It may suggest that you are acting without thinking or that you are moving too fast, leading to mistakes. This card warns against a lack of foresight and a need to slow down and be more strategic.' },
+                { name: 'Queen of Pentacles', suit: 'Pentacles', upright: 'The Queen of Pentacles represents nurturing, security, and a grounded spirit. She is a symbol of a caring and nurturing individual who is full of empathy and is able to connect with others on a deep level. This card encourages you to be more compassionate, to trust your intuition, and to find a sense of inner peace. It is a powerful symbol of emotional healing and a call to be more mindful of your feelings.', reversed: 'Reversed, the Queen of Pentacles can indicate a lack of compassion, a feeling of being overwhelmed, or a manipulation of emotions. It may suggest that you are being too emotional or that you are struggling to find a sense of inner peace. This card warns against a lack of empathy and a need to listen to others.' },
+                { name: 'King of Pentacles', suit: 'Pentacles', upright: 'The King of Pentacles represents wealth, success, and a stable leader. He is a symbol of a mature and stable individual who is able to express his emotions in a healthy way. This card encourages you to be more balanced, to be in control of your feelings, and to lead with a sense of compassion. It is a powerful symbol of emotional maturity and a call to be more mindful of your actions.', reversed: 'Reversed, the King of Pentacles can indicate a lack of emotional control, a feeling of being overwhelmed, or a manipulation of power. It may suggest that you are being too emotional or that you are struggling to find a sense of inner peace. This card warns against a lack of empathy and a need to listen to others.' },
+            ],
+            'spreads-section': [
+                {
+                    name: 'The Three-Card Spread',
+                    intro: 'This is a simple yet powerful spread for gaining a snapshot of a situation. It is ideal for focusing on a specific problem or a question that needs a quick answer.',
+                    cards: [
+                        { position: 'Card 1: Past', meaning: 'Represents the events or influences that have led to your current situation.' },
+                        { position: 'Card 2: Present', meaning: 'Represents the core of the situation as it exists right now. It shows the energy and actions currently at play.' },
+                        { position: 'Card 3: Future', meaning: 'Represents the likely outcome or potential future path if the current energy continues.' },
+                    ]
+                },
+                {
+                    name: 'The Celtic Cross Spread',
+                    intro: 'A comprehensive and detailed spread that offers deep insight into a complex situation. It provides a detailed look at all the factors at play, from internal feelings to external influences.',
+                    cards: [
+                        { position: 'Card 1: The Present', meaning: 'The heart of the matter. This card represents your current situation or state of mind.' },
+                        { position: 'Card 2: The Challenge', meaning: 'What is crossing you. This card represents the immediate obstacles or challenges you are facing.' },
+                        { position: 'Card 3: The Foundation', meaning: 'What is below you. This card represents the unconscious influences and foundational issues at play.' },
+                        { position: 'Card 4: The Past', meaning: 'What is behind you. This card represents recent past events that have influenced the present.' },
+                        { position: 'Card 5: The Crown', meaning: 'What is above you. This card represents your highest potential and conscious goals.' },
+                        { position: 'Card 6: The Future', meaning: 'What is before you. This card represents the immediate future and what is coming next.' },
+                        { position: 'Card 7: The Self', meaning: 'Your position in the situation. This card represents your feelings, role, and attitude in the matter.' },
+                        { position: 'Card 8: The Environment', meaning: 'The influence of others. This card represents how other people and the external world view you and the situation.' },
+                        { position: 'Card 9: The Hopes & Fears', meaning: 'Your inner thoughts. This card represents your hopes and fears about the outcome of the situation.' },
+                        { position: 'Card 10: The Outcome', meaning: 'The final result. This card represents the conclusion or resolution to the situation.' },
+                    ]
+                }
+            ]
+        };
+        
+        const cardDetailsWindow = document.getElementById('card-details-window');
+        const cardDetailsImage = document.getElementById('card-details-image');
+        const cardDetailsTitle = document.getElementById('card-details-title');
+        const cardDetailsSuit = document.getElementById('card-details-suit');
+        const cardDetailsUpright = document.getElementById('card-details-upright');
+        const cardDetailsReversed = document.getElementById('card-details-reversed');
+        const spreadDetailsWindow = document.getElementById('spread-details-window');
+        const spreadDetailsTitle = document.getElementById('spread-details-title');
+        const spreadDetailsIntro = document.getElementById('spread-details-intro');
+        const spreadDetailsCards = document.getElementById('spread-details-cards');
+
+        /**
+         * Converts a card name to a URL-friendly format.
+         * e.g., "The Fool" -> "The%20Fool"
+         * @param {string} cardName The name of the card.
+         * @returns {string} The formatted card name.
+         */
+        function formatCardNameForUrl(cardName) {
+            return cardName.replace(/ /g, '%20');
+        }
+
+        /**
+         * Renders all cards for a given section.
+         * @param {string} sectionId The ID of the section to render cards for.
+         */
+        function renderCards(sectionId) {
+            const cardGrid = document.getElementById(sectionId.replace('-section', '-grid'));
+            cardGrid.innerHTML = ''; // Clear previous cards
+            const cards = tarotCards[sectionId];
+            if (cards) {
+                cards.forEach((card, index) => {
+                    const cardItem = document.createElement('div');
+                    cardItem.className = 'card-item bg-gray-800 rounded-xl p-4 shadow-lg transform transition-all duration-300 hover:scale-105';
+                    
+                    const cardImage = document.createElement('img');
+                    const cardImageName = formatCardNameForUrl(card.name);
+                    
+                    // Using placehold.co to create dynamic, working placeholder images
+                    cardImage.src = `https://placehold.co/80x120/1f2937/d1d5db?text=${cardImageName}`;
+                    cardImage.alt = card.name;
+                    cardImage.className = 'card-image';
+                    
+                    const cardTitle = document.createElement('h3');
+                    cardTitle.className = 'text-sm font-bold mt-2';
+                    cardTitle.textContent = card.name;
+                    
+                    cardItem.appendChild(cardImage);
+                    cardItem.appendChild(cardTitle);
+                    cardItem.onclick = () => displayCardDetails(sectionId, index);
+                    cardGrid.appendChild(cardItem);
+                });
+            }
+        }
+        
+        /**
+         * Renders all spreads for the spreads section.
+         */
+        function renderSpreads() {
+            const spreadsGrid = document.getElementById('spreads-grid');
+            spreadsGrid.innerHTML = ''; // Clear previous spreads
+            const spreads = tarotCards['spreads-section'];
+            if (spreads) {
+                spreads.forEach((spread, index) => {
+                    const spreadItem = document.createElement('div');
+                    spreadItem.className = 'bg-gray-800 rounded-xl p-6 shadow-lg cursor-pointer transform transition-all duration-300 hover:scale-105';
+                    spreadItem.onclick = () => displaySpreadDetails(index);
+                    spreadItem.innerHTML = `
+                        <h3 class="text-xl font-bold text-yellow-300">${spread.name}</h3>
+                        <p class="mt-2 text-gray-400">${spread.intro.split('.')[0]}.</p>
+                        <p class="mt-4 text-sm text-gray-500">Click to learn more</p>
+                    `;
+                    spreadsGrid.appendChild(spreadItem);
+                });
+            }
+        }
+
+        /**
+         * Displays the details of a specific card in the bottom window.
+         * @param {string} sectionId The ID of the current card section.
+         * @param {number} cardIndex The index of the card in the array.
+         */
+        function displayCardDetails(sectionId, cardIndex) {
+            const card = tarotCards[sectionId][cardIndex];
+            if (card) {
+                const cardImageName = formatCardNameForUrl(card.name);
+                
+                // Using placehold.co to create dynamic, working placeholder images
+                cardDetailsImage.src = `https://placehold.co/150x225/1f2937/d1d5db?text=${cardImageName}`;
+                
+                cardDetailsImage.alt = card.name;
+                cardDetailsTitle.textContent = card.name;
+                cardDetailsSuit.textContent = card.suit;
+                cardDetailsUpright.textContent = card.upright;
+                cardDetailsReversed.textContent = card.reversed;
+                cardDetailsWindow.classList.add('visible');
+                hideSpreadDetails(); // Hide spread details if open
+            }
+        }
+
+        /**
+         * Hides the card details window.
+         */
+        function hideCardDetails() {
+            cardDetailsWindow.classList.remove('visible');
+        }
+
+        /**
+         * Displays the details of a specific spread.
+         * @param {number} spreadIndex The index of the spread in the array.
+         */
+        function displaySpreadDetails(spreadIndex) {
+            const spread = tarotCards['spreads-section'][spreadIndex];
+            if (spread) {
+                spreadDetailsTitle.textContent = spread.name;
+                spreadDetailsIntro.textContent = spread.intro;
+                spreadDetailsCards.innerHTML = ''; // Clear previous content
+                
+                spread.cards.forEach(cardPosition => {
+                    const cardPositionEl = document.createElement('div');
+                    cardPositionEl.className = 'bg-gray-800 rounded-xl p-4 shadow-md';
+                    cardPositionEl.innerHTML = `
+                        <h5 class="text-lg font-semibold text-teal-300">${cardPosition.position}</h5>
+                        <p class="text-gray-400 mt-2">${cardPosition.meaning}</p>
+                    `;
+                    spreadDetailsCards.appendChild(cardPositionEl);
+                });
+                
+                spreadDetailsWindow.classList.remove('translate-y-full');
+                hideCardDetails(); // Hide card details if open
+            }
+        }
+
+        /**
+         * Hides the spread details window.
+         */
+        function hideSpreadDetails() {
+            spreadDetailsWindow.classList.add('translate-y-full');
+        }
+
+        /**
+         * Shows the selected section and hides all others.
+         * @param {string} sectionId The ID of the section to show.
+         * @param {HTMLElement} navLink The navigation link that was clicked.
+         */
+        function showSection(sectionId, navLink) {
+            const sections = document.querySelectorAll('.card-section');
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                link.classList.remove('text-teal-300');
+                link.classList.add('text-gray-400');
+            });
+
+            navLink.classList.add('active');
+            navLink.classList.remove('text-gray-400');
+            navLink.classList.add('text-teal-300');
+
+            // Render cards for the selected section or spreads for the spreads section
+            if (sectionId === 'spreads-section') {
+                renderSpreads();
+            } else if (sectionId !== 'intro-section') {
+                renderCards(sectionId);
+            }
+            hideCardDetails();
+            hideSpreadDetails();
+        }
+
+        // Set initial state on page load
+        document.addEventListener('DOMContentLoaded', () => {
+             // Get all section IDs from the tarotCards object
+            const sections = Object.keys(tarotCards);
+            sections.forEach(sectionId => {
+                if (sectionId !== 'spreads-section') {
+                    renderCards(sectionId);
+                } else {
+                    renderSpreads();
+                }
+            });
+
+             // Set the initial active navigation link to the Welcome section
+            const initialNavLink = document.querySelector('.nav-link[data-section="intro-section"]');
+            if (initialNavLink) {
+                 showSection('intro-section', initialNavLink);
+            } else {
+                 // Fallback to show major-arcana-section if for some reason the intro link doesn't exist
+                 const fallbackLink = document.querySelector('.nav-link[data-section="major-arcana-section"]');
+                 if(fallbackLink) {
+                     showSection('major-arcana-section', fallbackLink);
+                 }
+            }
+        });
+    </script>
+</body>
+</html>
